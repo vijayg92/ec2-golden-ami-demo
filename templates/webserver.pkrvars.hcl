@@ -1,0 +1,5 @@
+app_role         = "webserver"
+app_version      = "2.4"
+aws_region       = "ap-southeast-1"
+instance_type    = "t2.micro"
+root_volume_size = "25"
