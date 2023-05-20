@@ -11,10 +11,10 @@ def test_apache_virtual_host(host):
     virtual_host = """
     <VirtualHost *:80>
         ServerName helloworld.myexample.com
-        DocumentRoot /var/www/html
-        ErrorLog /var/log/httpd/error.log
-        CustomLog /var/log/httpd/access.log combined
-        <Directory /var/www/html>
+        DocumentRoot /var/www/helloworld
+        ErrorLog /var/log/httpd/helloworld-error.log
+        CustomLog /var/log/httpd/helloworld-access.log combined
+        <Directory /var/www/helloworld>
             AllowOverride All
             Require all granted
         </Directory>
@@ -25,4 +25,4 @@ def test_apache_virtual_host(host):
 
 def test_apache_index_html(host):
     assert host.file("/var/www/html/index.html").exists
-    assert host.file("/var/www/html/index.html").contains("<h1>Hello World!</h1>")
+    assert host.file("/var/www/html/index.html").contains("<h1>Hello, World!</h1>")
