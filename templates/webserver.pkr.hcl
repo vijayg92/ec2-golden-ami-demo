@@ -15,12 +15,12 @@ variable "instance_type" {
 
 variable "root_volume_size" {
   type = string
-  default = "20"
+  default = "25"
 }
 
 variable "aws_region" {
   type = string
-  default = "ap-southeast-1"
+  default = "ap-south-1"
 }
 
 variable "aws_access_key" {
@@ -56,7 +56,6 @@ source "amazon-ebs" "webserver" {
   tags = {
     Name = "${var.app_role}"
   }
-  temporary_security_group_source_cidrs = ["49.36.185.169/32"]
 }
 
 build {
@@ -68,11 +67,9 @@ build {
     destination     = "/tmp/"
   }
 
-  provisioner "shell" {
-    execute_command  = "{{.Vars}} sudo -E -S bash '{{.Path}}'"
-    script = "scripts/deploy_apache.sh"
+  provisioner "ansible" {
+    playbook_file = "provioners/ansible/webserver.yaml"
   }
-
   provisioner "shell" {
     execute_command  = "{{.Vars}} sudo -E -S bash '{{.Path}}'"
     inline = [

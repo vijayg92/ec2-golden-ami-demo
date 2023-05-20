@@ -11,10 +11,10 @@ def test_apache_virtual_host(host):
     virtual_host = """
     <VirtualHost *:80>
         ServerName helloworld.myexample.com
-        DocumentRoot /var/www/helloworld
-        ErrorLog /var/log/httpd/helloworld-error.log
-        CustomLog /var/log/httpd/helloworld-access.log combined
-        <Directory /var/www/helloworld>
+        DocumentRoot /var/www/html
+        ErrorLog /var/log/httpd/error.log
+        CustomLog /var/log/httpd/access.log combined
+        <Directory /var/www/html>
             AllowOverride All
             Require all granted
         </Directory>

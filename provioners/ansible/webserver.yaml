@@ -1,0 +1,53 @@
+- name: WebApp Playbook
+  hosts: all
+  become: true
+
+  tasks:
+    - name: install_httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: set_listener
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen\s+80$'
+        line: 'Listen 0.0.0.0:80'
+
+    - name: create_vhost
+      copy:
+        content: |
+          <VirtualHost *:80>
+            ServerName helloworld.myexample.com
+            DocumentRoot /var/www/html
+            ErrorLog /var/log/httpd/error.log
+            CustomLog /var/log/httpd/access.log combined
+            <Directory /var/www/html>
+                AllowOverride All
+                Require all granted
+            </Directory>
+          </VirtualHost>
+        dest: /etc/httpd/conf.d/helloworld.conf
+
+    - name: create_webroot
+      file:
+        path: /var/www/html
+        state: directory
+        owner: apache
+        group: apache
+        mode: '0755'
+
+    - name: create_index_html
+      copy:
+        content: '<h1>Hello, World!</h1>'
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: '0644'
+
+
+    - name: start_httpd
+      service:
+        name: httpd
+        state: started
+        enabled: true
