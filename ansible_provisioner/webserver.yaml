@@ -45,9 +45,13 @@
         group: apache
         mode: '0644'
 
-
     - name: start_httpd
       service:
         name: httpd
         state: started
         enabled: true
+
+    - name: install_testinfra
+      ansible.builtin.pip:
+        name: pytest-testinfra
+        executable: pip3
